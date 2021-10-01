@@ -1,7 +1,11 @@
+require: 'rubocop-rspec'
+
 AllCops:
   NewCops: enable
   Include:
     - '**/Rakefile'
+    - "**/*_spec.rb"
+    - "**/spec/**/*"
 
 Style/Documentation:
   Enabled: false

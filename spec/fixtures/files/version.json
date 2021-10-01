@@ -1,1 +1,3 @@
-{ "yo": "yeahh" }
+# frozen_string_literal: true
+
+{ yo: 'yeahh' }

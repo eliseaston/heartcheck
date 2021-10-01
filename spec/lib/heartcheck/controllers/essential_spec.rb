@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Heartcheck
   module Controllers
     describe Essential do
@@ -11,10 +13,10 @@ module Heartcheck
 
         before do
           expect(Time).to receive(:now).and_return(
-                            # millisec time calc :p
-                            0.1, 1.2, # (1.2 - 0.1) * 1000.0 = 1100
-                            2.9, 3.0  # (3.0 - 2.9) * 1000.0 = 100
-                          )
+            # millisec time calc :p
+            0.1, 1.2, # (1.2 - 0.1) * 1000.0 = 1100
+            2.9, 3.0  # (3.0 - 2.9) * 1000.0 = 100
+          )
 
           Heartcheck.setup do |monitor|
             monitor.add :dummy1 do |c|

@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 require 'heartcheck/caching_app/cache'
 require 'concurrent'
 
 module Heartcheck
   class CachingApp
     describe Cache do
+      subject do
+        described_class.new(controllers, ttl)
+      end
+
       let(:ttl) { 0.1 }
       let(:controllers) do
         3.times.collect do |_|
@@ -27,21 +33,17 @@ module Heartcheck
       end
 
       def wait_for_one_execution
-        Concurrent::ScheduledTask.execute(ttl) { "waiting the ttl" }.value!
-      end
-
-      subject do
-        described_class.new(controllers, ttl)
+        Concurrent::ScheduledTask.execute(ttl) { 'waiting the ttl' }.value!
       end
 
       before do
         # use a blocking executor, no concurrency
-        subject.concurrent_opts = {executor: Concurrent::ImmediateExecutor.new}
+        subject.concurrent_opts = { executor: Concurrent::ImmediateExecutor.new }
       end
 
       describe '#result' do
         it 'returns a blank result on first dispatch' do
-          subject.concurrent_opts = {executor: Concurrent::SingleThreadExecutor.new}
+          subject.concurrent_opts = { executor: Concurrent::SingleThreadExecutor.new }
           subject.start
 
           expect(subject.result(controllers.first)).to be_nil

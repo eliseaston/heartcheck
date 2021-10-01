@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Heartcheck::Checks::Base do
@@ -81,6 +83,7 @@ describe Heartcheck::Checks::Base do
     context 'default is false' do
       describe '#functional?' do
         subject { super().functional? }
+
         it { is_expected.to be_falsey }
       end
     end
@@ -90,6 +93,7 @@ describe Heartcheck::Checks::Base do
 
       describe '#functional?' do
         subject { super().functional? }
+
         it { is_expected.to be_truthy }
       end
     end
@@ -99,6 +103,7 @@ describe Heartcheck::Checks::Base do
     context 'default is false' do
       describe '#dev?' do
         subject { super().dev? }
+
         it { is_expected.to be_falsey }
       end
     end
@@ -108,6 +113,7 @@ describe Heartcheck::Checks::Base do
 
       describe '#dev?' do
         subject { super().dev? }
+
         it { is_expected.to be_truthy }
       end
     end
@@ -118,6 +124,7 @@ describe Heartcheck::Checks::Base do
 
     context 'with success' do
       before { allow(subject).to receive(:validate) }
+
       it 'returns empty array' do
         expect(subject.check).to eq('base' => { 'status' => 'ok' })
       end
@@ -141,7 +148,7 @@ describe Heartcheck::Checks::Base do
         )
       end
 
-      it 'should not accumulate errors' do
+      it 'does not accumulate errors' do
         subject.check
         expect(subject.check).to eq(
           'base' => {
@@ -193,11 +200,12 @@ describe Heartcheck::Checks::Base do
 
     context 'without error' do
       let(:response) { { 'version' => '1234' } }
+
       before do
         allow(subject).to receive(:info).and_return(response)
       end
 
-      it 'should show a response' do
+      it 'shows a response' do
         expect(subject.informations).to eq(response)
       end
     end

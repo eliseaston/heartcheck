@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'rack/test'
 
 describe Heartcheck::App do
   include Rack::Test::Methods
 
-  let(:app) { described_class.new }
   subject   { last_response }
+
+  let(:app) { described_class.new }
 
   describe '#body' do
     subject { super().body }
@@ -28,11 +31,13 @@ describe Heartcheck::App do
 
     describe '#body' do
       subject { super().body }
+
       it { is_expected.to eq('[]') }
     end
 
     describe '#status' do
       subject { super().status }
+
       it { is_expected.to eq(200) }
     end
   end
@@ -40,11 +45,11 @@ describe Heartcheck::App do
   context 'on GET /dev' do
     before do
       Heartcheck.setup do |monitor|
-        log = Logger.new(STDOUT)
+        log = Logger.new($stdout)
         log.level = 4
         monitor.logger = log
         monitor.add :base do |c|
-          c.name = "check"
+          c.name = 'check'
         end
       end
       get '/dev'
@@ -53,12 +58,14 @@ describe Heartcheck::App do
     it 'has execution_time' do
       expect(subject.body).to match(/"execution_time":"([0-9]{1,2}).([0-9]{2}) ms"/)
     end
+
     it 'has total_execution_time' do
       expect(subject.body).to match(/"total_execution_time":"([0-9]{1,2}).([0-9]{2}) ms"/)
     end
 
     describe '#status' do
       subject { super().status }
+
       it { is_expected.to eq(200) }
     end
   end
@@ -68,11 +75,13 @@ describe Heartcheck::App do
 
     describe '#body' do
       subject { super().body }
+
       it { is_expected.to eq('[]') }
     end
 
     describe '#status' do
       subject { super().status }
+
       it { is_expected.to eq(200) }
     end
   end
@@ -82,11 +91,13 @@ describe Heartcheck::App do
 
     describe '#body' do
       subject { super().body }
+
       it { is_expected.to eq(MultiJson.dump({ status: 'ok' })) }
     end
 
     describe '#status' do
       subject { super().status }
+
       it { is_expected.to eq(200) }
     end
   end
@@ -96,11 +107,13 @@ describe Heartcheck::App do
 
     describe '#body' do
       subject { super().body }
+
       it { is_expected.to eq('Not found') }
     end
 
     describe '#status' do
       subject { super().status }
+
       it { is_expected.to eq(404) }
     end
   end
